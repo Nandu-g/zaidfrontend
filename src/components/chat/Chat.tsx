@@ -1,0 +1,195 @@
+"use client";
+import React, { useState } from "react";
+import { IoReloadOutline } from "react-icons/io5";
+import { RiSendPlaneLine } from "react-icons/ri";
+import axios from "axios";
+import { MdSportsGolf } from "react-icons/md";
+
+function Chat() {
+  interface Message {
+    content: string;
+    response: string;
+  }
+
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  const handleRegenerate = async () => {
+    const lastQuery =
+      messages.length > 0 ? messages[messages.length - 1].content : "";
+    setMessages((prevMessages) =>
+      prevMessages.map((msg, index) =>
+        index === prevMessages.length - 1 ? { ...msg, response: "" } : msg
+      )
+    );
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/assistant/chat",
+        {
+          message: lastQuery,
+        }
+      );
+      console.log("Response:", response.data);
+      setQuery("");
+      setMessages((prevMessages) =>
+        prevMessages.map((message, index) =>
+          index === prevMessages.length - 1
+            ? { ...message, response: response.data }
+            : message
+        )
+      );
+      console.log(messages, "messages");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value, "value of query of user");
+    setQuery(event?.target.value);
+  };
+
+  const handleSubmit = async (
+    event?: React.FormEvent | React.KeyboardEvent | React.MouseEvent
+  ) => {
+    event?.preventDefault();
+    setLoading(true);
+    if (query.trim() === "") return;
+    const userMessage: Message = { content: query, response: "" };
+    setMessages([...messages, userMessage]);
+
+    console.log(messages);
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/assistant/chat",
+        {
+          message: query,
+        }
+      );
+      console.log("Response:", response.data);
+      setQuery("");
+      setMessages((prevMessages) =>
+        prevMessages.map((message, index) =>
+          index === prevMessages.length - 1
+            ? { ...message, response: response.data }
+            : message
+        )
+      );
+      console.log(messages, "messages");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  return (
+    
+    <div className="flex-[2] bg-neutral-800 relative overflow-hidden">
+      {/* Chat messages area */}
+      <div className="overflow-y-auto pb-36 h-full">
+        {messages.map((msg, index) => (
+          <div key={index}>
+            {/* <div className="px-6 py-4 flex gap-4">
+              <img
+                src="/images/images.png"
+                className="w-10 h-10 rounded-full"
+              />
+              <p className="text-gray-300">{msg.content}</p>
+            </div> */}
+            <div className="flex justify-end px-6 py-4 gap-4">
+              <p className="text-gray-300 px-4 py-2 rounded-lg max-w-[70%]">
+                {msg.content}
+              </p>
+              <img
+                src="/images/images.png"
+                className="w-10 h-10 rounded-full"
+              />
+            </div>
+
+            <hr className="border-gray-600 mx-4 my-2" />
+            <div className="flex justify-start px-6 py-4 gap-4">
+              {msg.response ? (
+                <>
+                                  <img
+                    src="/images/chatbot.jpg"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <p className="text-gray-300">{msg.response}</p>
+
+                </>
+              ) : loading ? (
+                <p className="animate-pulse text-gray-400">
+                  Generating a response...
+                </p>
+              ) : (
+                <>
+                  <img
+                    src="/images/chatbot.jpg"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <p className="text-gray-300">{msg.response}</p>
+
+                </>
+              )}
+              <hr className="border-gray-600 mx-4 my-2" />
+            </div>
+          </div>
+        ))}
+
+        <div className="absolute bottom-0 w-full bg-neutral-800 px-6 py-4">
+          {messages.length > 0 && messages[messages.length - 1].response && (
+            <div className="px-6 py-4 flex justify-center">
+              <button
+                className="bg-indigo-700 px-8 py-2 rounded-md flex font-medium cursor-pointer"
+                onClick={handleRegenerate}
+                disabled={loading}
+              >
+                <IoReloadOutline className="mt-1 mr-2" />
+                Regenerate response
+              </button>
+            </div>
+          )}
+
+          <div className="flex w-full items-center">
+            <button className="px-6 py-3 bg-neutral-700 rounded-lg mx-2 cursor-pointer">
+              <IoReloadOutline />
+            </button>
+            <button className="px-6 py-3 bg-neutral-700 rounded-lg mx-2 cursor-pointer">
+              <IoReloadOutline />
+            </button>
+
+            <form className="flex flex-1 items-center" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Zaid is listening. Ask away..."
+                className="bg-neutral-700 text-neutral-400 px-6 py-3 rounded-lg flex-1"
+                onChange={handleChange}
+                value={query}
+                onKeyDown={handleKeyDown}
+              />
+              <button
+                type="submit"
+                className="px-4 py-3 bg-indigo-700 rounded-lg mx-2 cursor-pointer"
+              >
+                <RiSendPlaneLine />
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Chat;
