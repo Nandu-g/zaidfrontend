@@ -5,7 +5,13 @@ import { RiSendPlaneLine } from "react-icons/ri";
 import axios from "axios";
 import { MdSportsGolf } from "react-icons/md";
 
-function Chat() {
+type Props = {
+  messages: { content: string; response: string }[];
+  setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
+  chatId: number | null;
+};
+
+function Chat({ messages, setMessages,chatId }: Props) {
   interface Message {
     content: string;
     response: string;
@@ -13,9 +19,11 @@ function Chat() {
 
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-
+  // const [messages, setMessages] = useState<Message[]>([]);
+  
   const handleRegenerate = async () => {
+    const userId = 1
+    console.log(chatId,'this is the chatid')
     const lastQuery =
       messages.length > 0 ? messages[messages.length - 1].content : "";
     setMessages((prevMessages) =>
@@ -27,7 +35,7 @@ function Chat() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/assistant/chat",
+        `http://127.0.0.1:8000/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
         {
           message: lastQuery,
         }
@@ -57,16 +65,18 @@ function Chat() {
     event?: React.FormEvent | React.KeyboardEvent | React.MouseEvent
   ) => {
     event?.preventDefault();
+    const userId = 1
     setLoading(true);
     if (query.trim() === "") return;
     const userMessage: Message = { content: query, response: "" };
     setMessages([...messages, userMessage]);
 
     console.log(messages);
-
+    // const chatId = 1
+    console.log(chatId,'this is the chatId')
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/assistant/chat",
+        `http://127.0.0.1:8000/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
         {
           message: query,
         }
@@ -95,9 +105,9 @@ function Chat() {
 
   return (
     
-    <div className="flex-[2] bg-neutral-800 relative overflow-hidden">
+    <div className="flex-[2] bg-neutral-800 relative h-screen flex flex-col">
       {/* Chat messages area */}
-      <div className="overflow-y-auto pb-36 h-full">
+      <div className="flex-1 overflow-y-auto pb-36 ">
         {messages.map((msg, index) => (
           <div key={index}>
             {/* <div className="px-6 py-4 flex gap-4">
@@ -121,7 +131,7 @@ function Chat() {
             <div className="flex justify-start px-6 py-4 gap-4">
               {msg.response ? (
                 <>
-                                  <img
+                  <img
                     src="/images/chatbot.jpg"
                     className="w-10 h-10 rounded-full"
                   />

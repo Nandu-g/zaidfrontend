@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ createContext, useContext, useState } from "react";
 import { RiChatSearchLine } from "react-icons/ri";
 import { BiLibrary } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -8,11 +8,23 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import Procard from "./Procard";
 
-function Sidebar() {
+// const SidebarContext = createContext();
+type Props = {
+  onNewChat: () => void;
+};
+
+function Sidebar({ onNewChat }: Props) {
+
+const handleNewChat = () =>{
+
+  console.log('this is handling of new chat')
+
+  }
+
   return (
     <div className="bg-dark flex-[1] justify-center">
       <div className="ml-10">
-        <button className="bg-indigo-700 px-10 py-2 rounded-md cursor-pointer mb-5 mt-4">
+        <button className="bg-indigo-700 px-10 py-2 rounded-md cursor-pointer mb-5 mt-4" onClick={onNewChat}>
           + New Chat{" "}
         </button>
         <p className="mb-5 flex items-center gap-2 cursor-pointer text-gray-400">

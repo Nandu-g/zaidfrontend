@@ -3,23 +3,45 @@ import React, { useState,useEffect } from 'react'
 import { BsThreeDots } from "react-icons/bs";
 import axios from 'axios';
 
-function ChatHistory() {
+type ChatHistoryProps = {
+  setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
+  setSelectedChatId: React.Dispatch<React.SetStateAction<number | null>>
+};
 
-  const [chats, setChats] = useState<string[]>([]);  
+function ChatHistory({ setMessages,setSelectedChatId }: ChatHistoryProps) {
+
+  const [chats, setChats] = useState<{ id: number; title: string;}[]>([]);  
   useEffect(() => {
         fetchChats();
     }, []);
+
+  const handleSelectChat = async(chatId:number) => {
+    const userId = 1
+    console.log('this is the chatID',chatId)
+    try {
+      const response = await axios.get(`http://localhost:8000/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
+      console.log('this is the response',response.data)
+      const messages = response.data.messages;
+      const formatted = messages.map((msg: any) => ({
+        content: msg.query,
+        response: msg.response,
+      }));
+      setSelectedChatId(chatId)
+      setMessages(formatted);
+    }
+    catch(err) {
+      console.log(err,'error')
+    }
+  }
 
   const fetchChats = async () => {
     const userId = 1
         try {
             // setLoading(true);
             const response = await axios.get(`http://localhost:8000/assistant/chat-list?user_id=${userId}`);
-            
-           
             const data = await response.data;
             console.log(data)
-            // setChatData(data);
+            setChats(data.chat_list);
         } catch (err) {
             // setError(err.message);
             console.log('error', err)
@@ -29,63 +51,25 @@ function ChatHistory() {
     };
   return (
 <div className='flex-[1]'>
-  <p className="font-semibold mb-2">Saved chats</p>
+  <p className="font-semibold mb-2">Chat History</p>
+
   <div className='flex flex-col gap-2'>
-    <div className="flex items-center justify-between">
-      <span>sample 1</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 2</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 3</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 4</span>
-      <BsThreeDots />
-    </div>
-  </div>
-  <p className="font-semibold mb-2">Today</p>
-  <div className='flex flex-col gap-2'>
-    <div className="flex items-center justify-between">
-      <span>sample 1</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 2</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 3</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 4</span>
-      <BsThreeDots />
-    </div>
-  </div>
-  <p className="font-semibold mb-2">Tomorrow</p>
-  <div className='flex flex-col gap-2'>
-    <div className="flex items-center justify-between">
-      <span>sample 1</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 2</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 3</span>
-      <BsThreeDots />
-    </div>
-    <div className="flex items-center justify-between">
-      <span>sample 4</span>
-      <BsThreeDots />
-    </div>
-  </div>
+  {Array.isArray(chats) && chats.length > 0 ? (
+    chats.map((chat) => (
+      <div
+        key={chat.id}
+        className="flex items-center justify-between cursor-pointer px-4"
+        onClick={() => handleSelectChat(chat.id)}
+      >
+        <span>{chat.title || "Untitled Chat"}</span>
+        <BsThreeDots />
+      </div>
+    ))
+  ) : (
+    <p className="text-gray-400 px-4">No chats found</p>
+  )}
+</div>
+
 </div>
  
   )

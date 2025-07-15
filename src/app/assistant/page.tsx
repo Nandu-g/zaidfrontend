@@ -1,4 +1,6 @@
-import React from "react";
+'use client'; 
+import React,{useState} from "react";
+import axios from "axios";
 import Sidebar from "@/components/chat/Sidebar";
 import Navbar from "@/components/chat/Navbar";
 import Procard from "@/components/chat/Procard";
@@ -6,14 +8,42 @@ import Chat from "@/components/chat/Chat";
 import ChatHistory from "@/components/chat/ChatHistory";
 
 export default function page() {
+
+    interface Message {
+    content: string;
+    response: string;
+  }
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [selectedChatId, setSelectedChatId] = useState<number | null>(null);
+
+  const handleNewChat = async() =>{
+    const userId = 1
+    console.log('new chat page')
+    try{
+
+      const response = await axios.post(
+        `http://127.0.0.1:8000/assistant/new-chat?user_id=${userId}`
+      )
+      console.log(response)
+      setMessages(response.data.message);
+    }
+    catch(err){
+      console.log('error', err)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col">
-        <Navbar />
-        <div className="flex flex-1">
-          <Sidebar />
-          <Chat />
-          <ChatHistory />
+        <Navbar 
+        setSelectedChatId={setSelectedChatId}
+        setMessages={setMessages}
+        />
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar onNewChat={handleNewChat}/>
+          <Chat messages={messages} setMessages={setMessages} chatId={selectedChatId}/>
+          <ChatHistory setMessages={setMessages} setSelectedChatId={setSelectedChatId}/>
         </div>
       </div>
     </>
