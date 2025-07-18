@@ -6,27 +6,29 @@ import axios from 'axios';
 type ChatHistoryProps = {
   setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
   setSelectedChatId: React.Dispatch<React.SetStateAction<number | null>>
+  setSelectedChatTitle: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-function ChatHistory({ setMessages,setSelectedChatId }: ChatHistoryProps) {
+function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle }: ChatHistoryProps) {
 
   const [chats, setChats] = useState<{ id: number; title: string;}[]>([]);  
   useEffect(() => {
         fetchChats();
     }, []);
 
-  const handleSelectChat = async(chatId:number) => {
+  const handleSelectChat = async(chatId:number,chatTitle:string) => {
     const userId = 1
     console.log('this is the chatID',chatId)
     try {
       const response = await axios.get(`http://localhost:8000/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
       console.log('this is the response',response.data)
       const messages = response.data.messages;
-      const formatted = messages.map((msg: any) => ({
+      const formatted = messages.map((msg: any) => ({ 
         content: msg.query,
         response: msg.response,
       }));
       setSelectedChatId(chatId)
+      setSelectedChatTitle(chatTitle)
       setMessages(formatted);
     }
     catch(err) {
@@ -59,7 +61,7 @@ function ChatHistory({ setMessages,setSelectedChatId }: ChatHistoryProps) {
       <div
         key={chat.id}
         className="flex items-center justify-between cursor-pointer px-4"
-        onClick={() => handleSelectChat(chat.id)}
+        onClick={() => handleSelectChat(chat.id,chat.title)}
       >
         <span>{chat.title || "Untitled Chat"}</span>
         <BsThreeDots />

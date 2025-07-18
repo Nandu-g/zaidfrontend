@@ -15,10 +15,12 @@ interface SearchResult {
 type NavbarProps = {
   setSelectedChatId: React.Dispatch<React.SetStateAction<number | null>>;
   setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
+  selectedChatTitle: string | null;
+
 };
 
 
-function Navbar({ setSelectedChatId, setMessages }: NavbarProps) {
+function Navbar({ setSelectedChatId, setMessages,selectedChatTitle }: NavbarProps) {
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   
@@ -89,7 +91,7 @@ function Navbar({ setSelectedChatId, setMessages }: NavbarProps) {
         </div>
         {/*center box*/}
         <div className="bg-neutral-800 h-28 mt-3 rounded-tl-3xl flex-[2] flex items-center border-r-2 border-gray-600 px-6">
-          <p className="text-2xl">Getting a Commercial Registration</p>
+          <p className="text-2xl">{selectedChatTitle || "Select a chat"}</p>
           <div className="flex ml-auto gap-4">
             <FiUpload className="text-2xl cursor-pointer text-gray-400" />
             <FiUpload className="text-2xl cursor-pointer text-gray-400" />

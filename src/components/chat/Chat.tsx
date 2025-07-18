@@ -10,7 +10,7 @@ type Props = {
   setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
   chatId: number | null;
 };
-
+ 
 function Chat({ messages, setMessages,chatId }: Props) {
   interface Message {
     content: string;
@@ -20,7 +20,7 @@ function Chat({ messages, setMessages,chatId }: Props) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   // const [messages, setMessages] = useState<Message[]>([]);
-  
+  console.log('this is the message ')
   const handleRegenerate = async () => {
     const userId = 1
     console.log(chatId,'this is the chatid')
@@ -79,7 +79,7 @@ function Chat({ messages, setMessages,chatId }: Props) {
         `http://127.0.0.1:8000/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
         {
           message: query,
-        }
+        }   
       );
       console.log("Response:", response.data);
       setQuery("");
@@ -105,7 +105,7 @@ function Chat({ messages, setMessages,chatId }: Props) {
 
   return (
     
-    <div className="flex-[2] bg-neutral-800 relative h-screen flex flex-col">
+    <div className="flex-[3] bg-neutral-800 relative h-screen flex flex-col">
       {/* Chat messages area */}
       <div className="flex-1 overflow-y-auto pb-36 ">
         {messages.map((msg, index) => (

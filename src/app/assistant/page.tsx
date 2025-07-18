@@ -16,6 +16,8 @@ export default function page() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<number | null>(null);
+  const [selectedChatTitle, setSelectedChatTitle] = useState<string | null>(null);
+
 
   const handleNewChat = async() =>{
     const userId = 1
@@ -39,11 +41,17 @@ export default function page() {
         <Navbar 
         setSelectedChatId={setSelectedChatId}
         setMessages={setMessages}
+        selectedChatTitle={selectedChatTitle}
         />
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar onNewChat={handleNewChat}/>
+          <Sidebar 
+            onNewChat={handleNewChat}
+            setMessages={setMessages}
+            setSelectedChatId={setSelectedChatId}
+            setSelectedChatTitle={setSelectedChatTitle}
+          />
           <Chat messages={messages} setMessages={setMessages} chatId={selectedChatId}/>
-          <ChatHistory setMessages={setMessages} setSelectedChatId={setSelectedChatId}/>
+          {/* <ChatHistory setMessages={setMessages} setSelectedChatId={setSelectedChatId} setSelectedChatTitle={setSelectedChatTitle}/> */}
         </div>
       </div>
     </>

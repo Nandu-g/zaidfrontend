@@ -7,13 +7,27 @@ import { BsStars } from "react-icons/bs";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import Procard from "./Procard";
+import ChatHistory from "./ChatHistory";
 
 // const SidebarContext = createContext();
-type Props = {
+type ChatHistoryProps = {
+  
+  setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
+  setSelectedChatId: React.Dispatch<React.SetStateAction<number | null>>;
+  setSelectedChatTitle: React.Dispatch<React.SetStateAction<string | null>>;
   onNewChat: () => void;
+
 };
 
-function Sidebar({ onNewChat }: Props) {
+
+function Sidebar({ onNewChat,setMessages,setSelectedChatId,setSelectedChatTitle }: ChatHistoryProps) {
+
+  interface Message {
+    content: string;
+    response: string;
+  }
+
+
 
 const handleNewChat = () =>{
 
@@ -31,7 +45,7 @@ const handleNewChat = () =>{
           <RiChatSearchLine />
           Find Chat
         </p>
-        <p className="mb-5 flex items-center gap-2 cursor-pointer text-gray-400">
+        {/* <p className="mb-5 flex items-center gap-2 cursor-pointer text-gray-400">
           <BiLibrary />
           Law Library
         </p>
@@ -55,7 +69,8 @@ const handleNewChat = () =>{
           <IoMdInformationCircleOutline />
           Upgrades & FAQ
         </p>
-        <Procard />
+        <Procard /> */}
+        <ChatHistory setMessages={setMessages} setSelectedChatId={setSelectedChatId} setSelectedChatTitle={setSelectedChatTitle}/>
       </div>
     </div>
   );
