@@ -286,11 +286,11 @@ function Chat({ messages, setMessages, chatId }: Props) {
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleSubmit();
-    }
-  };
+  // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.key === "Enter") {
+  //     handleSubmit();
+  //   }
+  // };
 
   return (
     <div className="flex-[3] bg-neutral-800 h-screen flex flex-col relative">
@@ -378,7 +378,7 @@ function Chat({ messages, setMessages, chatId }: Props) {
               className="bg-neutral-700 text-neutral-400 px-6 py-3 rounded-lg flex-1"
               onChange={handleChange}
               value={query}
-              onKeyDown={handleKeyDown}
+              // onKeyDown={handleKeyDown}
             />
             <button
               type="submit"
