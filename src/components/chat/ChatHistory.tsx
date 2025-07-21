@@ -7,9 +7,10 @@ type ChatHistoryProps = {
   setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
   setSelectedChatId: React.Dispatch<React.SetStateAction<number | null>>
   setSelectedChatTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  onNewChat?: () => void
 };
 
-function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle }: ChatHistoryProps) {
+function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle,onNewChat }: ChatHistoryProps) {
 
   const [chats, setChats] = useState<{ id: number; title: string;}[]>([]);  
   useEffect(() => {
@@ -35,6 +36,16 @@ function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle }: Cha
       console.log(err,'error')
     }
   }
+  useEffect(() => {
+    fetchChats();
+  }, []);
+
+  // Optional: Refresh chat list when a new chat is created
+  useEffect(() => {
+    if (onNewChat) {
+      fetchChats(); // Refresh chat list after new chat creation
+    }
+  }, [onNewChat]);
 
   const fetchChats = async () => {
     const userId = 1

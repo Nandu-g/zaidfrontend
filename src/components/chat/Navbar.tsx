@@ -92,18 +92,18 @@ function Navbar({ setSelectedChatId, setMessages,selectedChatTitle }: NavbarProp
         {/*center box*/}
         <div className="bg-neutral-800 h-28 mt-3 rounded-tl-3xl flex-[2] flex items-center border-r-2 border-gray-600 px-6">
           <p className="text-2xl">{selectedChatTitle || "Select a chat"}</p>
-          <div className="flex ml-auto gap-4">
+          {/* <div className="flex ml-auto gap-4">
             <FiUpload className="text-2xl cursor-pointer text-gray-400" />
             <FiUpload className="text-2xl cursor-pointer text-gray-400" />
             <FiUpload className="text-2xl cursor-pointer text-gray-400" />
-          </div>
+          </div> */}
         </div>
 
         {/* Right Box */}
         <div className="bg-neutral-800 h-28 mt-3 flex-[1] flex items-center justify-between rounded-tr-3xl px-4">
-          <p className="text-white text-xl">All Chats</p>
+          {/* <p className="text-white text-xl">All Chats</p>
           <IoSearchOutline className="text-2xl cursor-pointer text-gray-400 mr-4" />
-          <FiUpload className="text-2xl cursor-pointer text-gray-400" />
+          <FiUpload className="text-2xl cursor-pointer text-gray-400" /> */}
         </div>
       </div>
     </div>

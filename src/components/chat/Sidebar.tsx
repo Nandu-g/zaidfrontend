@@ -41,10 +41,10 @@ const handleNewChat = () =>{
         <button className="bg-indigo-700 px-10 py-2 rounded-md cursor-pointer mb-5 mt-4" onClick={onNewChat}>
           + New Chat{" "}
         </button>
-        <p className="mb-5 flex items-center gap-2 cursor-pointer text-gray-400">
+        {/* <p className="mb-5 flex items-center gap-2 cursor-pointer text-gray-400">
           <RiChatSearchLine />
           Find Chat
-        </p>
+        </p> */}
         {/* <p className="mb-5 flex items-center gap-2 cursor-pointer text-gray-400">
           <BiLibrary />
           Law Library
@@ -70,7 +70,7 @@ const handleNewChat = () =>{
           Upgrades & FAQ
         </p>
         <Procard /> */}
-        <ChatHistory setMessages={setMessages} setSelectedChatId={setSelectedChatId} setSelectedChatTitle={setSelectedChatTitle}/>
+        <ChatHistory setMessages={setMessages} setSelectedChatId={setSelectedChatId} setSelectedChatTitle={setSelectedChatTitle} onNewChat={onNewChat}/>
       </div>
     </div>
   );

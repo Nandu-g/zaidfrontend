@@ -29,6 +29,9 @@ export default function page() {
       )
       console.log(response)
       setMessages(response.data.message);
+      // console.log(response.data.chat_id)
+      setSelectedChatId(response.data.chat_id);
+      setSelectedChatTitle(response.data.chat_title);
     }
     catch(err){
       console.log('error', err)
