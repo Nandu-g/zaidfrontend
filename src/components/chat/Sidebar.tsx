@@ -14,11 +14,6 @@ type ChatHistoryProps = {
 
 function Sidebar({ onNewChat,setMessages,setSelectedChatId,setSelectedChatTitle }: ChatHistoryProps) {
 
-  interface Message {
-    content: string;
-    response: string;
-  }
-
   return (
     <div className="bg-dark flex-[1] justify-center">
       <div className="ml-10">

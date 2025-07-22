@@ -10,6 +10,12 @@ type ChatHistoryProps = {
   onNewChat?: () => void
 };
 
+interface Message {
+    query: string;
+    response: string;
+  }
+
+
 function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle,onNewChat }: ChatHistoryProps) {
 
   const [chats, setChats] = useState<{ id: number; title: string;}[]>([]);  
@@ -24,7 +30,7 @@ function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle,onNewC
       const response = await axios.get(`http://localhost:8000/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
       console.log('this is the response',response.data)
       const messages = response.data.messages;
-      const formatted = messages.map((msg: any) => ({ 
+      const formatted = messages.map((msg: Message) => ({ 
         content: msg.query,
         response: msg.response,
       }));
