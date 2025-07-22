@@ -5,7 +5,7 @@ import Sidebar from "@/components/chat/Sidebar";
 import Navbar from "@/components/chat/Navbar";
 import Chat from "@/components/chat/Chat";
 
-export default function page() {
+export default function Page() {
 
     interface Message {
     content: string;
