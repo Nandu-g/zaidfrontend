@@ -3,9 +3,7 @@ import React,{useState} from "react";
 import axios from "axios";
 import Sidebar from "@/components/chat/Sidebar";
 import Navbar from "@/components/chat/Navbar";
-import Procard from "@/components/chat/Procard";
 import Chat from "@/components/chat/Chat";
-import ChatHistory from "@/components/chat/ChatHistory";
 
 export default function page() {
 

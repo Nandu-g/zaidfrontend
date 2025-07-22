@@ -2,7 +2,6 @@
 import React,{useState} from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { MdOutlineCurtainsClosed } from "react-icons/md";
-import { FiUpload } from "react-icons/fi";
 import axios from 'axios'
 
 interface SearchResult {
@@ -11,7 +10,10 @@ interface SearchResult {
   query: string;
   chat_id:number;
 }
-
+interface BackendMessage {
+  query: string;
+  response: string;
+}
 type NavbarProps = {
   setSelectedChatId: React.Dispatch<React.SetStateAction<number | null>>;
   setMessages: React.Dispatch<React.SetStateAction<{ content: string; response: string }[]>>;
@@ -38,7 +40,7 @@ function Navbar({ setSelectedChatId, setMessages,selectedChatTitle }: NavbarProp
 
     try {
       const res = await axios.get(`http://localhost:8000/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
-      const messages = res.data.messages.map((msg: any) => ({
+      const messages = res.data.messages.map((msg: BackendMessage) => ({
         content: msg.query,
         response: msg.response,
       }));
