@@ -27,7 +27,7 @@ function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle,onNewC
     const userId = 1
     console.log('this is the chatID',chatId)
     try {
-      const response = await axios.get(`http://localhost:8000/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
+      const response = await axios.get(`https://zaid-backend-3.onrender.com/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
       console.log('this is the response',response.data)
       const messages = response.data.messages;
       const formatted = messages.map((msg: Message) => ({ 
@@ -57,7 +57,7 @@ function ChatHistory({ setMessages,setSelectedChatId,setSelectedChatTitle,onNewC
     const userId = 1
         try {
             // setLoading(true);
-            const response = await axios.get(`http://localhost:8000/assistant/chat-list?user_id=${userId}`);
+            const response = await axios.get(`https://zaid-backend-3.onrender.com/assistant/chat-list?user_id=${userId}`);
             const data = await response.data;
             console.log(data)
             setChats(data.chat_list);

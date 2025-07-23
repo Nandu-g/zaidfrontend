@@ -39,7 +39,7 @@ function Navbar({ setSelectedChatId, setMessages,selectedChatTitle }: NavbarProp
     const userId = 1;
 
     try {
-      const res = await axios.get(`http://localhost:8000/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
+      const res = await axios.get(`https://zaid-backend-3.onrender.com/assistant/chat-messages?user_id=${userId}&chat_id=${chatId}`);
       const messages = res.data.messages.map((msg: BackendMessage) => ({
         content: msg.query,
         response: msg.response,
@@ -62,8 +62,8 @@ function Navbar({ setSelectedChatId, setMessages,selectedChatTitle }: NavbarProp
   }
   try{
    
-    const results = await axios.get(`http://localhost:8000/assistant/search-messages?q=${value}&user_id=${userId}`)
-    // const results = await axios.get(`http://localhost:8000/assistant/search-messages?q=${value}&user_id=${userId}`)
+    const results = await axios.get(`https://zaid-backend-3.onrender.com/assistant/search-messages?q=${value}&user_id=${userId}`)
+    // const results = await axios.get(`https://zaid-backend-3.onrender.com/assistant/search-messages?q=${value}&user_id=${userId}`)
 
     console.log(results,'results')
     setSearchResults(results.data);

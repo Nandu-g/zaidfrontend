@@ -232,7 +232,7 @@ function Chat({ messages, setMessages, chatId }: Props) {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
+        `https://zaid-backend-3.onrender.com/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
         {
           message: lastQuery,
         }
@@ -267,7 +267,7 @@ function Chat({ messages, setMessages, chatId }: Props) {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
+        `https://zaid-backend-3.onrender.com/assistant/chat?user_id=${userId}&chat_id=${chatId}`,
         {
           message: query,
         }
