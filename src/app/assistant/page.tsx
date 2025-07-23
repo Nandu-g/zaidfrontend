@@ -23,7 +23,7 @@ export default function Page() {
     try{
 
       const response = await axios.post(
-        `https://zaid-backend-3.onrender.com/assistant/new-chat?user_id=${userId}`
+        `https://zaid-backend-4.onrender.com/assistant/new-chat?user_id=${userId}`
       )
       console.log(response)
       setMessages(response.data.message);
